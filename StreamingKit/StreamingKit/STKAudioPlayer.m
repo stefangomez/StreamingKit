@@ -127,20 +127,20 @@ static void NormalizeDisabledBuffers(STKAudioPlayerOptions* options)
 #define CHECK_STATUS_AND_REPORT(call) \
 	if ((status = (call))) \
 	{ \
-		[self unexpectedError:STKAudioPlayerErrorAudioSystemError]; \
+		[self unexpectedError:STKAudioPlayerErrorAudioSystemError1]; \
 	}
 
 #define CHECK_STATUS_AND_RETURN(call) \
 	if ((status = (call))) \
 	{ \
-		[self unexpectedError:STKAudioPlayerErrorAudioSystemError]; \
+		[self unexpectedError:STKAudioPlayerErrorAudioSystemError2]; \
 		return;\
 	}
 
 #define CHECK_STATUS_AND_RETURN_VALUE(call, value) \
 	if ((status = (call))) \
 	{ \
-		[self unexpectedError:STKAudioPlayerErrorAudioSystemError]; \
+		[self unexpectedError:STKAudioPlayerErrorAudioSystemError3]; \
 		return value;\
 	}
 
@@ -1559,7 +1559,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
         
         if (error)
         {
-            [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
+            [self unexpectedError:STKAudioPlayerErrorAudioSystemError4];
             
             return;
         }
@@ -1690,7 +1690,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
                 
                 if (error)
                 {
-                    [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
+                    [self unexpectedError:STKAudioPlayerErrorAudioSystemError5];
                     
                     pthread_mutex_unlock(&playerMutex);
                     
@@ -1725,7 +1725,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
                 
                 if (error)
                 {
-                    [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
+                    [self unexpectedError:STKAudioPlayerErrorAudioSystemError6];
                     
                     pthread_mutex_unlock(&playerMutex);
                     
@@ -2010,7 +2010,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
         
         if (status)
         {
-            [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
+            [self unexpectedError:STKAudioPlayerErrorAudioSystemError7];
             
             return;
         }
@@ -2050,7 +2050,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
         
         if (status)
         {
-            [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
+            [self unexpectedError:STKAudioPlayerErrorAudioSystemError8];
             
             return;
         }
@@ -2409,7 +2409,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
     
     if (status)
     {
-        [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
+        [self unexpectedError:STKAudioPlayerErrorAudioSystemError9];
         
         return NO;
     }
@@ -2437,7 +2437,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
     
     if (status)
     {
-        [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
+        [self unexpectedError:STKAudioPlayerErrorAudioSystemError10];
     }
     else if (!isRunning)
     {
@@ -2451,7 +2451,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
 	
     if (status)
     {
-        [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
+        [self unexpectedError:STKAudioPlayerErrorAudioSystemError11];
     }
     
     [self resetPcmBuffers];
