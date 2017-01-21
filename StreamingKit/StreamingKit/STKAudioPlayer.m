@@ -1112,7 +1112,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
 
 -(void) setCurrentlyReadingEntry:(STKQueueEntry*)entry andStartPlaying:(BOOL)startPlaying
 {
-    [self setCurrentlyReadingEntry:entry andStartPlaying:startPlaying clearQueue:YES];
+    [self setCurrentlyReadingEntry:entry andStartPlaying:startPlaying clearQueue:NO];
 }
 
 -(void) setCurrentlyReadingEntry:(STKQueueEntry*)entry andStartPlaying:(BOOL)startPlaying clearQueue:(BOOL)clearQueue
