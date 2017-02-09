@@ -127,20 +127,20 @@ static void NormalizeDisabledBuffers(STKAudioPlayerOptions* options)
 #define CHECK_STATUS_AND_REPORT(call) \
 	if ((status = (call))) \
 	{ \
-		[self unexpectedError:STKAudioPlayerErrorAudioSystemError1]; \
+		[self unexpectedError:STKAudioPlayerErrorAudioSystemError1 systemError:status]; \
 	}
 
 #define CHECK_STATUS_AND_RETURN(call) \
 	if ((status = (call))) \
 	{ \
-		[self unexpectedError:STKAudioPlayerErrorAudioSystemError2]; \
+		[self unexpectedError:STKAudioPlayerErrorAudioSystemError2 systemError:status]; \
 		return;\
 	}
 
 #define CHECK_STATUS_AND_RETURN_VALUE(call, value) \
 	if ((status = (call))) \
 	{ \
-		[self unexpectedError:STKAudioPlayerErrorAudioSystemError3]; \
+		[self unexpectedError:STKAudioPlayerErrorAudioSystemError3 systemError:status]; \
 		return value;\
 	}
 
@@ -965,13 +965,13 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
     return 0;
 }
 
--(void) unexpectedError:(STKAudioPlayerErrorCode)errorCodeIn
+-(void) unexpectedError:(STKAudioPlayerErrorCode)errorCodeIn systemError:(OSStatus)systemError
 {
     self.internalState = STKAudioPlayerInternalStateError;
     
     [self playbackThreadQueueMainThreadSyncBlock:^
     {
-        [self.delegate audioPlayer:self unexpectedError:errorCodeIn];
+        [self.delegate audioPlayer:self unexpectedError:errorCodeIn systemError:systemError];
     }];
 }
 
@@ -1559,7 +1559,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
         
         if (error)
         {
-            [self unexpectedError:STKAudioPlayerErrorAudioSystemError4];
+            [self unexpectedError:STKAudioPlayerErrorAudioSystemError4 systemError:error];
             
             return;
         }
@@ -1592,7 +1592,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
         {
             if (dataSourceIn == currentlyPlayingEntry.dataSource)
             {
-                [self unexpectedError:STKAudioPlayerErrorStreamParseBytesFailed];
+                [self unexpectedError:STKAudioPlayerErrorStreamParseBytesFailed systemError:error];
             }
             
             return;
@@ -1617,7 +1617,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
         return;
     }
     
-    [self unexpectedError:STKAudioPlayerErrorDataNotFound];
+    [self unexpectedError:STKAudioPlayerErrorDataNotFound systemError:0];
 }
 
 -(void) dataSourceEof:(STKDataSource*)dataSourceIn
@@ -1690,7 +1690,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
                 
                 if (error)
                 {
-                    [self unexpectedError:STKAudioPlayerErrorAudioSystemError5];
+                    [self unexpectedError:STKAudioPlayerErrorAudioSystemError5 systemError:error];
                     
                     pthread_mutex_unlock(&playerMutex);
                     
@@ -1725,7 +1725,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
                 
                 if (error)
                 {
-                    [self unexpectedError:STKAudioPlayerErrorAudioSystemError6];
+                    [self unexpectedError:STKAudioPlayerErrorAudioSystemError6 systemError:error];
                     
                     pthread_mutex_unlock(&playerMutex);
                     
@@ -2010,7 +2010,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
         
         if (status)
         {
-            [self unexpectedError:STKAudioPlayerErrorAudioSystemError7];
+            [self unexpectedError:STKAudioPlayerErrorAudioSystemError7 systemError:status];
             
             return;
         }
@@ -2050,7 +2050,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
         
         if (status)
         {
-            [self unexpectedError:STKAudioPlayerErrorAudioSystemError8];
+            [self unexpectedError:STKAudioPlayerErrorAudioSystemError8 systemError:status];
             
             return;
         }
@@ -2409,7 +2409,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
     
     if (status)
     {
-        [self unexpectedError:STKAudioPlayerErrorAudioSystemError9];
+        [self unexpectedError:STKAudioPlayerErrorAudioSystemError9 systemError:status];
         
         return NO;
     }
@@ -2437,7 +2437,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
     
     if (status)
     {
-        [self unexpectedError:STKAudioPlayerErrorAudioSystemError10];
+        [self unexpectedError:STKAudioPlayerErrorAudioSystemError10 systemError:status];
     }
     else if (!isRunning)
     {
@@ -2451,7 +2451,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
 	
     if (status)
     {
-        [self unexpectedError:STKAudioPlayerErrorAudioSystemError11];
+        [self unexpectedError:STKAudioPlayerErrorAudioSystemError11 systemError:status];
     }
     
     [self resetPcmBuffers];
@@ -2645,7 +2645,7 @@ OSStatus AudioConverterCallback(AudioConverterRef inAudioConverter, UInt32* ioNu
             }
             else if (status != 0)
             {
-                [self unexpectedError:STKAudioPlayerErrorCodecError];
+                [self unexpectedError:STKAudioPlayerErrorCodecError systemError:status];
                 
                 return;
             }
@@ -2704,7 +2704,7 @@ OSStatus AudioConverterCallback(AudioConverterRef inAudioConverter, UInt32* ioNu
             }
             else if (status != 0)
             {
-                [self unexpectedError:STKAudioPlayerErrorCodecError];
+                [self unexpectedError:STKAudioPlayerErrorCodecError systemError:status];
                 
                 return;
             }
@@ -2753,7 +2753,7 @@ OSStatus AudioConverterCallback(AudioConverterRef inAudioConverter, UInt32* ioNu
             }
             else if (status != 0)
             {
-                [self unexpectedError:STKAudioPlayerErrorCodecError];
+                [self unexpectedError:STKAudioPlayerErrorCodecError systemError:status];
                 
                 return;
             }
